@@ -12,6 +12,7 @@ type Spec struct {
 	// Annotations add meta information per CDI spec. Note these are CDI-specific and do not affect container metadata.
 	Annotations    map[string]string `json:"annotations,omitempty"`
 	Devices        []Device          `json:"devices"`
+	Cpus           []Cpu             `json:"cpus"`
 	ContainerEdits ContainerEdits    `json:"containerEdits,omitempty"`
 }
 
@@ -21,6 +22,20 @@ type Device struct {
 	// Annotations add meta information per device. Note these are CDI-specific and do not affect container metadata.
 	Annotations    map[string]string `json:"annotations,omitempty"`
 	ContainerEdits ContainerEdits    `json:"containerEdits"`
+}
+
+// Cpu is a "CPU" a container runtime can add to a container
+type Cpu struct {
+	Name string `json:"name"`
+	// Annotations add meta information per CPU. Note these are CDI-specific and do not affect container metadata.
+	Annotations    map[string]string `json:"annotations,omitempty"`
+	ContainerEdits CPUContainerEdits `json:"containerEdits"`
+}
+
+// ContainerEdits are edits a container runtime must make to the OCI spec to expose the device.
+type CPUContainerEdits struct {
+	Env   []string `json:"env,omitempty"`
+	Hooks []*Hook  `json:"hooks,omitempty"`
 }
 
 // ContainerEdits are edits a container runtime must make to the OCI spec to expose the device.
